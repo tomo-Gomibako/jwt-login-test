@@ -7,7 +7,7 @@ const body = require("koa-body")
 const path = require("path")
 
 const routes = require("./routes")
-const jwt = require("./jwt")
+// const jwt = require("./jwt")
 
 const app = new Koa()
 
