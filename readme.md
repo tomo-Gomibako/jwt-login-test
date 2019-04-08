@@ -1,2 +1,2 @@
-# koa-router file-separating test
+# Login test with JSON Web Token (JWT)
 
