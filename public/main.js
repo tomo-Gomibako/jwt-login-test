@@ -27,10 +27,17 @@ async function login() {
 }
 
 async function logout() {
-	// const res = await post("/login", data)
-	// console.log(res)
-	// if(res.token)
-	// 	localStorage.setItem("token", res.token)
+	const token = localStorage.getItem("token")
+	const res = await post("/logout", {
+		token
+	})
+	console.log(res)
+	if(res.status) {
+		localStorage.removeItem("token")
+		msg("You just logged out!")
+	} else {
+		msg("Fail to log out.")
+	}
 }
 
 function post(url, data) {

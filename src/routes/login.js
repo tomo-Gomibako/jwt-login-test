@@ -71,14 +71,10 @@ router.post("/login", async ctx => {
 		token: newToken
 	})
 	// console.log(db.tokens)
-	console.log(await jwt.encrypt({
-		id,
-		expire: +new Date() / 1000 | 0 + 604800
-	}, path.resolve(__dirname, "../keys/private.key")))
 	ctx.body = res
 })
 
-router.post("/login", async ctx => {
+router.post("/logout", async ctx => {
 	const { token } = ctx.request.body
 	const res = {}
 	if(!token) {
@@ -86,7 +82,16 @@ router.post("/login", async ctx => {
 		ctx.body = res
 		return
 	}
-	const user = await jwt.decrypt(token, path.resolve(__dirname, "../keys/private.key"))
+	try {
+		user = await jwt.decrypt(token, path.resolve(__dirname, "../keys/private.key"))
+	} catch(err) {
+		res.status = "invalid token"
+		ctx.body = res
+		return
+	}
+	db.remove("tokens", db.get("tokens").indexOf(db.get("tokens").filter(v => v.id === user.id)[0]))
+	res.status = "success"
+	ctx.body = res
 })
 
 module.exports = router
